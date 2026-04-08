@@ -37,7 +37,7 @@ export default function Home() {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <a
-              href="https://apps.apple.com"
+              href="https://testflight.apple.com/join/Fzm4kQQ6"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-block"
@@ -119,7 +119,7 @@ function HomePage() {
               My Script is an innovative iPhone teleprompter camera app designed to help creators record professional-quality videos while reading a script seamlessly. Say goodbye to memorizing lines or fumbling with separate devices.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+              <a href="https://testflight.apple.com/join/Fzm4kQQ6" target="_blank" rel="noopener noreferrer">
                 <Button className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white text-base py-6">
                   Download Free App
                 </Button>
@@ -226,7 +226,7 @@ function HomePage() {
         <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
           Download My Script today and start recording professional-quality videos with ease.
         </p>
-        <a href="https://apps.apple.com" target="_blank" rel="noopener noreferrer">
+        <a href="https://testflight.apple.com/join/Fzm4kQQ6" target="_blank" rel="noopener noreferrer">
           <Button className="bg-white text-primary hover:bg-white/90 text-base py-6 px-8">
             Download Free Now
           </Button>
