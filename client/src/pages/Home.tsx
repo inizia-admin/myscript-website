@@ -1,312 +1,55 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Camera, Mic, Image as ImageIcon, Zap, Settings, Share2 } from "lucide-react";
-import { useAuth } from "@/_core/hooks/useAuth";
-
-type Page = "home" | "privacy" | "terms";
+import { ArrowDown, ArrowUpRight, Camera, Check, CirclePause, FileText, Focus, LockKeyhole, SlidersHorizontal, Smartphone } from "lucide-react";
+import "./home.css";
 
 const APP_STORE_URL = "https://apps.apple.com/us/app/my-script/id6761744852";
+const shots = [
+  { file: "01-library", title: "A home for your ideas", text: "Keep your scripts together, ready for your next take." },
+  { file: "02-editor", title: "Make every word yours", text: "Write or paste a script, then polish it before you record." },
+  { file: "03-script-controls", title: "Find your natural pace", text: "Change scrolling and text size without ending your take." },
+  { file: "04-inline-edit", title: "A quick change, right there", text: "Edit your words directly from the recording screen." },
+  { file: "05-camera-settings", title: "A little more control", text: "Choose camera settings supported by your phone." },
+];
 
 export default function Home() {
-  const [currentPage, setCurrentPage] = useState<Page>("home");
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-  const handleNavClick = (page: Page) => {
-    setCurrentPage(page);
-    scrollToTop();
-  };
-
+  const showTerms = new URLSearchParams(window.location.search).get("page") === "terms";
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <button
-            onClick={() => handleNavClick("home")}
-            className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-          >
-            <img
-              src="https://d2xsxph8kpxj0f.cloudfront.net/310519663407580698/PEXjfzbBj2h8wBtzwBPhxV/app-logo_cd593c88.png"
-              alt="My Script"
-              className="w-10 h-10"
-            />
-            <span className="font-bold text-lg text-primary hidden sm:inline">My Script</span>
-          </button>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-8">
-            <a
-              href={APP_STORE_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-block"
-            >
-              <Button className="bg-accent hover:bg-accent/90 text-white">Download Free App</Button>
-            </a>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-12">
-        {currentPage === "home" && <HomePage />}
-        {currentPage === "privacy" && <PrivacyPage />}
-        {currentPage === "terms" && <TermsPage />}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-primary text-white mt-20 py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <h3 className="font-bold text-lg mb-4">My Script</h3>
-              <p className="text-sm text-white/80">
-                The teleprompter camera app for creating professional videos on iPhone. Free forever.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Legal</h4>
-              <ul className="space-y-2 text-sm">
-                <li>
-                  <button
-                    onClick={() => handleNavClick("privacy")}
-                    className="text-white/80 hover:text-white transition-colors"
-                  >
-                    Privacy Policy
-                  </button>
-                </li>
-                <li>
-                  <button
-                    onClick={() => handleNavClick("terms")}
-                    className="text-white/80 hover:text-white transition-colors"
-                  >
-                    Terms & Conditions
-                  </button>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact</h4>
-              <p className="text-sm text-white/80">
-                Email: <a href="mailto:hello@inizia.agency" className="hover:text-white transition-colors">hello@inizia.agency</a>
-              </p>
-              <p className="text-sm text-white/80 mt-2">Gold Coast, Australia</p>
-            </div>
-          </div>
-          <div className="border-t border-white/20 pt-8">
-            <p className="text-sm text-white/60 text-center">
-              &copy; 2026 My Script. All rights reserved.
-            </p>
-          </div>
-        </div>
-      </footer>
+    <div className="ms-site">
+      <a className="ms-skip" href="#main">Skip to content</a>
+      <header className="ms-header"><div className="ms-wrap ms-nav">
+        <a href="/" className="ms-brand"><img src="/images/app-icon.png" alt="" width="40" height="40" /><span>My Script</span></a>
+        <nav aria-label="Main navigation"><a className="ms-nav-link" href="/#features">Features</a><a className="ms-nav-link" href="/#pricing">Pricing</a><a className="ms-button ms-small" href={APP_STORE_URL}>Get for iOS <ArrowUpRight size={17} aria-hidden="true" /></a></nav>
+      </div></header>
+      <main id="main">{showTerms ? <div className="ms-wrap ms-terms"><TermsPage /></div> : <HomePage />}</main>
+      <footer className="ms-footer ms-wrap"><div><a href="/" className="ms-brand"><img src="/images/app-icon.png" alt="" width="36" height="36" /><span>My Script</span></a><p>Your words. Your pace. Your best take.</p></div><div className="ms-footer-links"><a href="/privacy.html">Privacy policy</a><a href="/?page=terms">Terms & conditions</a><a href="mailto:hello@inizia.agency">Get in touch <ArrowUpRight size={15} aria-hidden="true" /></a></div><small>© {new Date().getFullYear()} Micaela Piacenza · Gold Coast, Australia</small></footer>
     </div>
   );
 }
 
 function HomePage() {
-  return (
-    <div className="space-y-20">
-      {/* Hero Section */}
-      <section className="py-12 md:py-20">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary leading-tight">
-              Record Smoother Scripted Videos
-            </h1>
-            <p className="text-lg text-foreground/80 leading-relaxed">
-              My Script is an innovative iPhone teleprompter camera app designed to help creators record professional-quality videos while reading a script seamlessly. Say goodbye to memorizing lines or fumbling with separate devices.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
-                <Button className="w-full sm:w-auto bg-accent hover:bg-accent/90 text-white text-base py-6">
-                  Download Free App
-                </Button>
-              </a>
-            </div>
-          </div>
-          <div className="flex justify-center">
-            <div className="relative w-64 h-auto">
-              {/* iPhone Frame */}
-              <div className="relative bg-black rounded-3xl p-3 shadow-2xl" style={{
-                aspectRatio: '9/19.5',
-                backgroundImage: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)'
-              }}>
-                {/* Notch */}
-                <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-6 bg-black rounded-b-3xl z-10"></div>
-                {/* Screen */}
-                <div className="w-full h-full bg-black rounded-2xl overflow-hidden">
-                  <img
-                    src="https://d2xsxph8kpxj0f.cloudfront.net/310519663407580698/PEXjfzbBj2h8wBtzwBPhxV/resized_1_e171c9c3.webp"
-                    alt="My Script App"
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section className="py-12 md:py-20 bg-muted rounded-2xl px-8 md:px-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">How It Works</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {[
-            { step: "1", title: "Add Your Script", desc: "Create or paste your script into the app" },
-            { step: "2", title: "Adjust Settings", desc: "Configure camera settings, script scroll speed, and text size" },
-            { step: "3", title: "Save to Camera Roll", desc: "Record and save your video directly to Photos" },
-          ].map((item, idx) => (
-            <div key={idx} className="text-center">
-              <div className="w-16 h-16 bg-accent text-white rounded-full flex items-center justify-center font-bold text-2xl mx-auto mb-6">
-                {item.step}
-              </div>
-              <h3 className="font-semibold text-primary mb-2 text-lg">{item.title}</h3>
-              <p className="text-foreground/70">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-12 md:py-20">
-        <h2 className="text-3xl md:text-4xl font-bold text-primary mb-12 text-center">Core Features</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              icon: Camera,
-              title: "Flexible Camera",
-              desc: "Use front or back camera for recording",
-            },
-            {
-              icon: Mic,
-              title: "Integrated Teleprompter",
-              desc: "Seamless text overlay during recording",
-            },
-            {
-              icon: Zap,
-              title: "Auto-Scrolling Script",
-              desc: "Script scrolls at your chosen speed",
-            },
-            {
-              icon: Settings,
-              title: "Customizable Display",
-              desc: "Adjust font size, speed, and opacity",
-            },
-            {
-              icon: ImageIcon,
-              title: "High-Quality Recording",
-              desc: "Configure resolution and frame rate",
-            },
-            {
-              icon: Share2,
-              title: "Direct to Photos",
-              desc: "Recordings saved to your Photos app",
-            },
-          ].map((feature, idx) => {
-            const Icon = feature.icon;
-            return (
-              <div
-                key={idx}
-                className="p-6 border border-border rounded-xl hover:shadow-lg hover:border-primary/50 transition-all duration-300"
-              >
-                <Icon className="w-10 h-10 text-accent mb-4" />
-                <h3 className="text-lg font-semibold text-primary mb-2">{feature.title}</h3>
-                <p className="text-foreground/70">{feature.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-12 md:py-20 bg-primary text-white rounded-2xl px-8 md:px-12 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Create Better Videos?</h2>
-        <p className="text-lg text-white/90 mb-8 max-w-2xl mx-auto">
-          Download My Script today and start recording professional-quality videos with ease.
-        </p>
-        <a href={APP_STORE_URL} target="_blank" rel="noopener noreferrer">
-          <Button className="bg-white text-primary hover:bg-white/90 text-base py-6 px-8">
-            Download Free Now
-          </Button>
-        </a>
-      </section>
-    </div>
-  );
-}
-
-function PrivacyPage() {
-  return (
-    <div className="max-w-3xl mx-auto py-12 md:py-20 space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold text-primary mb-4">Privacy Policy</h1>
-        <p className="text-foreground/70">Last Updated: April 8, 2026</p>
-      </div>
-
-      <div className="prose prose-lg max-w-none space-y-8">
-        <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary">1. Data Collection and Use</h2>
-          <p className="text-foreground/80">
-            My Script is designed with user privacy in mind. The app operates primarily locally on your device and does not collect personal data from its users.
-          </p>
-          <ul className="space-y-3 text-foreground/80 ml-6">
-            <li><strong>Script Content:</strong> All script text created or pasted into the app is stored locally on your iPhone. It is not transmitted to any external servers or third parties.</li>
-            <li><strong>Recorded Videos:</strong> Videos recorded using My Script are saved directly to your iPhone's Photos library. These recordings remain on-device and are not uploaded or shared by the app.</li>
-            <li><strong>Camera and Microphone Access:</strong> The app requests access to your device's camera and microphone solely for the purpose of recording videos. This access is only active while you are actively recording within the app.</li>
-            <li><strong>Photo Library Access:</strong> The app requests access to your Photo Library to save the finished video recordings. This access is used only for saving content to your device.</li>
-          </ul>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary">2. No Personal Data Collection</h2>
-          <p className="text-foreground/80">
-            My Script does not collect, transmit, or retain any personal data from its users. Specifically:
-          </p>
-          <ul className="space-y-2 text-foreground/80 ml-6">
-            <li>There is no account system within the app.</li>
-            <li>There is no cloud synchronization of user data.</li>
-            <li>There are no analytics or advertising SDKs integrated into the app.</li>
-            <li>No user data is intentionally sent to our servers, as the app does not currently utilize any backend servers for data storage or processing.</li>
-          </ul>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary">3. Third-Party Services</h2>
-          <p className="text-foreground/80">
-            My Script does not integrate with any third-party services that collect user data. However, please note that Apple or TestFlight may process some data independently under Apple's own policies (e.g., app usage data, crash logs). This processing is governed by Apple's privacy policies and is not controlled by My Script.
-          </p>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary">4. Contacting Us</h2>
-          <p className="text-foreground/80">
-            If you contact us by email at hello@inizia.agency, we may receive your email address and any information you choose to send us. This information will be used solely to respond to your inquiry.
-          </p>
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary">5. Changes to This Privacy Policy</h2>
-          <p className="text-foreground/80">
-            We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.
-          </p>
-        </section>
-
-        <section className="space-y-4 border-t border-border pt-8">
-          <h2 className="text-2xl font-bold text-primary">Contact Information</h2>
-          <div className="bg-muted p-6 rounded-lg space-y-2">
-            <p><strong>App Name:</strong> My Script</p>
-            <p><strong>Developer:</strong> Micaela Piacenza</p>
-            <p><strong>Email:</strong> <a href="mailto:hello@inizia.agency" className="text-accent hover:underline">hello@inizia.agency</a></p>
-            <p><strong>Location:</strong> Gold Coast, Australia</p>
-            <p><strong>ABN:</strong> 33 489 646 982</p>
-          </div>
-        </section>
-      </div>
-    </div>
-  );
+  return <>
+    <section className="ms-hero ms-wrap">
+      <div className="ms-hero-copy"><p className="ms-eyebrow"><span className="ms-dot" /> THE TELEPROMPTER CAMERA FOR YOUR NEXT GREAT TAKE</p><h1>Your words.<br />Your pace.<br /><span>Your best take.</span></h1><p className="ms-lead">Read your script while you record. Speak naturally, stay on track and make videos that sound like you.</p><div className="ms-actions"><a className="ms-button" href={APP_STORE_URL}>Get My Script for iOS <ArrowUpRight size={20} aria-hidden="true" /></a><a className="ms-text-link" href="#how-it-works">See how it works <ArrowDown size={17} aria-hidden="true" /></a></div><p className="ms-price-note">US$1.49 once. No subscriptions. No ads.<br /><span>Local prices vary by store and country.</span></p><p className="ms-availability">For iPhone & iPad · Android coming soon<br />Creator update 1.1 is awaiting App Store review.</p></div>
+      <div className="ms-hero-art" aria-label="My Script library and editor screenshots"><div className="ms-art-label"><span className="ms-dot" /> READY WHEN YOU ARE</div><img className="ms-phone ms-phone-back" src="/images/02-editor.png" alt="My Script editor with the new starter script" width="1206" height="2622" /><img className="ms-phone ms-phone-front" src="/images/01-library.png" alt="My Script library showing saved scripts" width="1206" height="2622" /><div className="ms-art-caption"><FileText size={22} aria-hidden="true" /><div>A little preparation.<br /><strong>A lot more confidence.</strong></div></div></div>
+    </section>
+    <div className="ms-benefit-strip"><div className="ms-wrap"><span><Check size={18} aria-hidden="true" /> Pay once</span><span><Check size={18} aria-hidden="true" /> Record at your pace</span><span><Check size={18} aria-hidden="true" /> Keep your content locally</span></div></div>
+    <section id="features" className="ms-section ms-wrap"><div className="ms-section-heading"><p className="ms-eyebrow">MADE FOR THE MOMENT YOU HIT RECORD</p><h2>Less memorising.<br />More being yourself.</h2><p>From a quick update to your next big idea, keep your words and your camera in one place.</p></div><div className="ms-features">
+      {[
+        {icon:SlidersHorizontal,title:"A script that keeps up with you",text:"Adjust scroll speed and font size as you record. Set the script panel height and opacity to keep your framing clear."},
+        {icon:CirclePause,title:"Pause. Breathe. Keep going.",text:"Pause and resume a take, switch front and back cameras, then Stop & Save. Your script returns to the start for the next take."},
+        {icon:FileText,title:"Your words, within reach",text:"Create and edit scripts locally. Need a last-minute change? Open the editor right from the script overlay."},
+        {icon:Focus,title:"Make the camera work for you",text:"Choose supported resolution and frame rate, focus/exposure lock, white-balance lock and stabilization. Pinch the preview to zoom."},
+        {icon:Smartphone,title:"Turn your phone. Keep your flow.",text:"Drag the controls up in portrait or sideways in landscape. Keep recording buttons close while your script stays visible."},
+        {icon:LockKeyhole,title:"Your content stays with you",text:"No account, no developer cloud uploads and no ads. Scripts stay on your device; finished videos save to Photos or your gallery."},
+      ].map(({icon:Icon,title,text})=><article className="ms-feature" key={title}><span className="ms-feature-icon"><Icon size={24} strokeWidth={1.7} aria-hidden="true" /></span><h3>{title}</h3><p>{text}</p></article>)}
+    </div><p className="ms-capability-note">Camera options vary by phone, operating system and recording mode. Cinematic is available only on supported iPhones and compatible formats; Android shows its own supported options.</p></section>
+    <section className="ms-showcase"><div className="ms-wrap"><div className="ms-section-heading"><p className="ms-eyebrow">A LOOK INSIDE THE CREATOR UPDATE</p><h2>Everything you need.<br />Right where you need it.</h2><p>Explore the updated app, from your first script to your camera settings.</p></div><div className="ms-shot-grid">{shots.map((shot)=><figure key={shot.file}><a href={`/images/${shot.file}.jpg`} target="_blank" rel="noreferrer" aria-label={`Enlarge: ${shot.title}`}><img loading="lazy" src={`/images/${shot.file}.jpg`} alt={shot.title} width="1206" height="2622" /></a><figcaption><h3>{shot.title}</h3><p>{shot.text}</p></figcaption></figure>)}</div></div></section>
+    <section id="how-it-works" className="ms-section ms-wrap"><div className="ms-section-heading"><p className="ms-eyebrow">FROM IDEA TO CAMERA ROLL</p><h2>Three steps. One good take.</h2></div><div className="ms-steps">{[
+      ["01","Add your words","Write or paste a script. Keep it short, make it sound like you, and you're ready."],
+      ["02","Find your rhythm","Choose your camera, set a comfortable text size and scroll speed, then frame your shot."],
+      ["03","Record and save","Hit Record, pause when you need to, and Stop & Save when you're happy. Your video goes to your device's gallery."],
+    ].map(([step,title,text])=><article key={step}><span>{step}</span><h3>{title}</h3><p>{text}</p></article>)}</div></section>
+    <section id="pricing" className="ms-wrap ms-pricing"><div><p className="ms-eyebrow">ONE SMALL PURCHASE. YOUR NEXT BIG IDEA.</p><h2>Pay once.<br />Keep creating.</h2><p>No subscription. No ads. No in-app upgrades.<br />All the tools in My Script, in one purchase.</p></div><div className="ms-price-card"><p className="ms-price"><span>US$</span>1.49</p><p>One-time purchase</p><a className="ms-button" href={APP_STORE_URL}>Get on the App Store <ArrowUpRight size={20} aria-hidden="true" /></a><p className="ms-fine">Prices vary by country; your store shows the final local price. iOS and Android purchases are separate.</p><div className="ms-android"><Camera size={19} aria-hidden="true" /><span>Android is coming soon.<br />Google Play release is in preparation.</span></div></div></section>
+  </>;
 }
 
 function TermsPage() {
@@ -314,14 +57,14 @@ function TermsPage() {
     <div className="max-w-3xl mx-auto py-12 md:py-20 space-y-8">
       <div>
         <h1 className="text-4xl font-bold text-primary mb-4">Terms & Conditions</h1>
-        <p className="text-foreground/70">Last Updated: April 8, 2026</p>
+        <p className="text-foreground/70">Last Updated: November 14, 2026</p>
       </div>
 
       <div className="prose prose-lg max-w-none space-y-8">
         <section className="space-y-4">
           <h2 className="text-2xl font-bold text-primary">1. License to Use the App</h2>
           <p className="text-foreground/80">
-            My Script is licensed, not sold, to you for use strictly in accordance with these Terms. Micaela Piacenza grants you a non-transferable, non-exclusive, revocable, limited license to use the App on any iPhone device that you own or control, as permitted by the Apple App Store Terms of Service.
+            My Script is licensed, not sold, to you for use strictly in accordance with these Terms. Micaela Piacenza grants you a non-transferable, non-exclusive, revocable, limited license to use the App on a compatible iOS or Android device that you own or control, as permitted by the applicable app store terms.
           </p>
         </section>
 
@@ -361,9 +104,9 @@ function TermsPage() {
         </section>
 
         <section className="space-y-4">
-          <h2 className="text-2xl font-bold text-primary">7. Apple App Store Terms</h2>
+          <h2 className="text-2xl font-bold text-primary">7. App Store Terms</h2>
           <p className="text-foreground/80">
-            You acknowledge that these Terms are between you and Micaela Piacenza only, not with Apple, Inc. ("Apple"). Apple is not responsible for the App or the content thereof. Your use of the App must comply with the App Store Terms of Service. Apple has no obligation whatsoever to furnish any maintenance and support services with respect to the App.
+            You acknowledge that these Terms are between you and Micaela Piacenza only, not with Apple, Inc. ("Apple"). Apple is not responsible for the App or the content thereof. Your use of the iOS App must comply with the App Store Terms of Service. Apple has no obligation whatsoever to furnish any maintenance and support services with respect to the App. Android downloads and purchases are handled separately by Google Play under its applicable terms. Purchases are platform-specific.
           </p>
         </section>
 
